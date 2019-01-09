@@ -1,0 +1,76 @@
+<!DOCTYPE html> 
+<head>
+    <meta charset="UTF-8">
+    <title>Scoped CSS Variables and JS</title>
+</head>    
+<body>
+    <h2>Update CSS Variables with <span class="hl">JS</span></h2>
+<div class="controls">
+    <label for="spacing">Spacing: </label>    
+    <input type="range" name="spacing" min="10" max="200" data-sizing="px">
+
+    <label for="blur">Blur: </label>    
+    <input type="range" name="blur" min="0" max="25" data-sizing="px">
+
+    <label for="base">Base Color: </label>    
+    <input type="color" name="base" value="#ffc600">
+</div>
+
+
+<img src="https://wonderland1981.files.wordpress.com/2012/09/alexander_der_grosse_babylon.jpg"/>
+<style> 
+/* HERE ARE THE CSS VARIABLES!*/
+:root{
+    --base: #ffc600;
+    --spacing: 10px;
+    --blur: 10px;
+}
+
+img{
+    padding: var(--spacing);
+    background: var(--base);
+    filter: blur(var(--blur));
+}
+
+.hl{
+    color: var(--base);
+}
+
+/** this is just default CSS, it has nothing to do with CSS Variables **/
+body{
+    text-align: center;
+}
+
+body{
+    background: #193549;
+    color: white;
+    font-family: 'helvetica neue', sans-serif;
+    font-weight: 100;
+    font-size: 50px;
+}
+
+.controls{
+    margin-bottom: 50px;
+}
+</style>
+
+<script>
+    //selects all the scripts in the page
+    const inputs = document.querySelectorAll('.controls input');
+    
+    function handleUpdate()
+    {
+        //data-sizing we created as an attribute in the html so we can retrieve it here in JS
+        //it should bring 'px' for range controls and nothing ('') for color picker
+        const suffix = this.dataset.sizing || '';
+        document.documentElement.style.setProperty(`--${this.name}`, this.value + suffix);        
+    }
+    //change will only trigger after the value was setted, by that I mean, on mouseup
+    inputs.forEach(input => input.addEventListener('change', handleUpdate));
+    inputs.forEach(input => input.addEventListener('mousemove', handleUpdate));
+
+
+
+</script>
+</body>
+</html>
